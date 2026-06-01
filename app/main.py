@@ -17,7 +17,9 @@ class CarWashStation:
         for car in car_list:
            if car.clean_mark < self.clean_power:
                service_income += self.calculate_washing_price(car)
+               self.wash_single_car(car)
         return service_income
+    
 
     def calculate_washing_price(self, car: Car):
         return round(
@@ -30,20 +32,8 @@ class CarWashStation:
         return car.clean_mark
 
     def rate_service(self, rating:float):
+        total = (self.average_rating * self.count_of_ratings) + rating
         self.count_of_ratings += 1
-        self.average_rating = round((self.average_rating + rating / self.count_of_ratings), 1)
+        self.average_rating = round(total / self.count_of_ratings, 1)
 
-
-pinky_cars = CarWashStation(
-    distance_from_city_center=6,
-    clean_power=8,
-    average_rating=3.9,
-    count_of_ratings=11
-)
-
-bmw = Car(comfort_class=3, clean_mark=3, brand='BMW')
-audi = Car(comfort_class=4, clean_mark=2, brand='Audi')
-
-print(f"income = {pinky_cars.serve_cars([bmw, audi])}")
-pinky_cars.rate_service(5)
 
